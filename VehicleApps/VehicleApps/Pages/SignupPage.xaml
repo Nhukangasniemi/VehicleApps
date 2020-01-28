@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="VehicleApps.Pages.SignupPage">
+             x:Class="VehicleApps.Pages.SignupPage"
+			 NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
 		<ScrollView>
 			<StackLayout Spacing="15"
@@ -40,7 +41,8 @@
 				<Button Text="Login"
                         BackgroundColor="#666AD1"
                         TextColor="White"
-                        x:Name="BtnLogin"/>
+                        x:Name="BtnLogin"
+						Clicked="BtnLogin_Clicked"/>
 			</StackLayout>
 		</ScrollView>
 	</ContentPage.Content>
