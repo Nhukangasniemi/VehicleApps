@@ -6,7 +6,7 @@ namespace VehicleApps.Models
 {
 	public class VehicleImage
 	{
-		public string VehicleId { get; set; }
-		public string ImageArray { get; set; }
+		public int VehicleId { get; set; }
+		public byte[] ImageArray { get; set; }
 	}
 }

@@ -48,7 +48,6 @@ namespace VehicleApps.Services
 			return true;
 		}
 
-		[Authorize]
 		public static async Task<bool> ChangePassword(string oldPassword, string newPassword, string confirmPassword)
 		{
 			var changePasswordModel = new ChangePasswordModel()
@@ -61,10 +60,79 @@ namespace VehicleApps.Services
 			var httpClient = new HttpClient();
 			var json = JsonConvert.SerializeObject(changePasswordModel);
 			var content = new StringContent(json, Encoding.UTF8, "application/json");
-			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue()
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
 			var response = await httpClient.PostAsync("https://xamarinvehicles.azurewebsites.net/api/accounts/ChangePassword", content);
 			if (!response.IsSuccessStatusCode) return false;
 			return true;
+		}
+
+		public static async Task<bool> EditPhoneNumber(string phoneNumber)
+		{
+			var httpClient = new HttpClient();
+			var content = new StringContent($"Number={phoneNumber}", Encoding.UTF8, "application/x-www-form-urlencoded");
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.PostAsync("https://xamarinvehicles.azurewebsites.net/api/accounts/EditPhoneNumber", content);
+			if (!response.IsSuccessStatusCode) return false;
+			return true;
+		}
+
+		public static async Task<bool> EditUserProfile(byte[] imageArray)
+		{
+			var httpClient = new HttpClient();
+			var json = JsonConvert.SerializeObject(imageArray);
+			var content = new StringContent(json, Encoding.UTF8, "application/json");
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.PostAsync("https://xamarinvehicles.azurewebsites.net/api/accounts/EditUserProfile", content);
+			if (!response.IsSuccessStatusCode) return false;
+			return true;
+		}
+
+		public static async Task<UserImageModel> GetUserProfileImage(byte[] imageArray)
+		{
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.GetStringAsync("https://xamarinvehicles.azurewebsites.net/api/accounts/UserProfileImage");
+			return JsonConvert.DeserializeObject<UserImageModel>(response);
+		}
+
+		public static async Task<List<Category>> GetCategories()
+		{
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.GetStringAsync("https://xamarinvehicles.azurewebsites.net/api/accounts/Categories");
+			return JsonConvert.DeserializeObject<List<Category>>(response);
+		}
+
+		public static async Task<bool> AddImage(int vehicleId, byte[] imageArray)
+		{
+			var vehicleImage = new VehicleImage()
+			{
+				VehicleId = vehicleId,
+				ImageArray = imageArray
+			};
+			var httpClient = new HttpClient();
+			var json = JsonConvert.SerializeObject(vehicleImage);
+			var content = new StringContent(json, Encoding.UTF8, "application/json");
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.PostAsync("https://xamarinvehicles.azurewebsites.net/api/accounts/AddImage", content);
+			if (!response.IsSuccessStatusCode) return false;
+			return true;
+		}
+
+		public static async Task<VehicleDetail> GetVehicleDetail(int id)
+		{
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.GetStringAsync($"https://xamarinvehicles.azurewebsites.net/api/accounts/VehicleDetails?id={id}");
+			return JsonConvert.DeserializeObject<VehicleDetail>(response);
+		}
+
+		public static async Task<List<VehicleByCategory>> GetVehicleByCategory(int categoryId)
+		{
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.GetStringAsync($"https://xamarinvehicles.azurewebsites.net/api/accounts/Vehicles?categoryId={categoryId}");
+			return JsonConvert.DeserializeObject<List<VehicleByCategory>>(response);
 		}
 	}
 }
