@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VehicleApps.Models
 {
-	class MyAd
+	public class MyAd
 	{
         public int id { get; set; }
         public string title { get; set; }

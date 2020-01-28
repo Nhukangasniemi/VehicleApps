@@ -134,5 +134,40 @@ namespace VehicleApps.Services
 			var response = await httpClient.GetStringAsync($"https://xamarinvehicles.azurewebsites.net/api/accounts/Vehicles?categoryId={categoryId}");
 			return JsonConvert.DeserializeObject<List<VehicleByCategory>>(response);
 		}
+
+		public static async Task<List<SearchVehicle>> SearchVehicle(string search)
+		{
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.GetStringAsync($"https://xamarinvehicles.azurewebsites.net/api/accounts/SearchVehicles?search={search}");
+			return JsonConvert.DeserializeObject<List<SearchVehicle>>(response);
+		}
+
+		public static async Task<VehicleResponse> AddVehicle(Vehicle vehicle)
+		{
+			var httpClient = new HttpClient();
+			var json = JsonConvert.SerializeObject(vehicle);
+			var content = new StringContent(json, Encoding.UTF8, "application/json");
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.PostAsync("https://xamarinvehicles.azurewebsites.net/api/Vehicles", content);
+			var jsonResult = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<VehicleResponse>(jsonResult);
+		}
+
+		public static async Task<List<HotAndNewAd>> GetHotAndNewAd(string search)
+		{
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.GetStringAsync("https://xamarinvehicles.azurewebsites.net/api/Vehicles/HotAndNewAds");
+			return JsonConvert.DeserializeObject<List<HotAndNewAd>>(response);
+		}
+
+		public static async Task<List<MyAd>> GetMyAds()
+		{
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
+			var response = await httpClient.GetStringAsync("https://xamarinvehicles.azurewebsites.net/api/Vehicles/MyAds");
+			return JsonConvert.DeserializeObject<List<MyAd>>(response);
+		}
 	}
 }
