@@ -23,6 +23,7 @@ namespace VehicleApps.Pages
 			if (response)
 			{
 				await DisplayAlert("Hi", "Your account has been created", "Alright");
+				Navigation.PushModalAsync(new LoginPage());
 			}
 			else
 			{

@@ -1,4 +1,5 @@
 ﻿using System;
+using VehicleApps.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +11,7 @@ namespace VehicleApps
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
+			MainPage = new NavigationPage(new SignupPage());
 		}
 
 		protected override void OnStart()
