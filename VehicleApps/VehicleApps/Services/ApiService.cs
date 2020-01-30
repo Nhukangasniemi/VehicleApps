@@ -154,7 +154,7 @@ namespace VehicleApps.Services
 			return JsonConvert.DeserializeObject<VehicleResponse>(jsonResult);
 		}
 
-		public static async Task<List<HotAndNewAd>> GetHotAndNewAd(string search)
+		public static async Task<List<HotAndNewAd>> GetHotAndNewAd()
 		{
 			var httpClient = new HttpClient();
 			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));
