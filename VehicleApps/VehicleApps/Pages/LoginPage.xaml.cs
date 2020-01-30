@@ -27,7 +27,8 @@ namespace VehicleApps.Pages
 			var res = await ApiService.Login(EntEmail.Text, EntPassword.Text);
 			if (res)
 			{
-				await DisplayAlert("Hi", "Login Successful", "Alright");
+				//Set the HomePage to be main page. Then after login, user can't go back to login page
+				Application.Current.MainPage = new NavigationPage(new HomePage());
 			}
 			else {
 				await DisplayAlert("Oops", "Something went wrong", "Cancel");
