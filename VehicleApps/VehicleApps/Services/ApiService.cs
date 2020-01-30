@@ -87,7 +87,7 @@ namespace VehicleApps.Services
 			return true;
 		}
 
-		public static async Task<UserImageModel> GetUserProfileImage(byte[] imageArray)
+		public static async Task<UserImageModel> GetUserProfileImage()
 		{
 			var httpClient = new HttpClient();
 			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Preferences.Get("accessToken", string.Empty));

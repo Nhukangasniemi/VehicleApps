@@ -32,7 +32,7 @@ namespace VehicleApps.Pages
 
             if ( !CrossMedia.Current.IsTakePhotoSupported)
             {
-                DisplayAlert("Oops", "Your device does not support this feature", "OK");
+                await DisplayAlert("Oops", "Your device does not support this feature", "OK");
                 return;
             }
 
@@ -56,6 +56,20 @@ namespace VehicleApps.Pages
             var response = await ApiService.EditUserProfile(imageArray);
             if (response) return;
             await DisplayAlert("Something wrong", "Please upload the image again", "Alright");
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            var profileImage = await ApiService.GetUserProfileImage();
+            if (string.IsNullOrEmpty(profileImage.imageUrl))
+            {
+                ImgProfile.Source = "userPlaceholder.png";
+            }
+            else
+            {
+                ImgProfile.Source = profileImage.FullImagePath;
+            }
         }
     }
 }
